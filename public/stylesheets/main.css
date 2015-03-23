@@ -66,7 +66,7 @@ textarea {
     text-align: center;
     /* margin-top: 400px; */
     padding-top: 400px;
-    display: none;
+    display: block;
     background: rgba(2,2,2,0.5);
     /* vertical-align: middle; */
 }
@@ -86,7 +86,13 @@ textarea {
     left: 0;
 }
 
-#getImage {
+#skipImage {
+    position: absolute;
+    top: 700px;
+    left: 200px;
+}
+
+#saveImage {
     position: absolute;
     top: 700px;
     left: 300px;

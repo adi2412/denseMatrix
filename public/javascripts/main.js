@@ -8,7 +8,6 @@ $(function(){
     var held = false;
     var resizing = false;
     var box;
-
     $.ajax({
       url: "/getimage",
       dataType: "json"
@@ -33,12 +32,12 @@ $(function(){
                 c.attr("fill-opacity", 0.2);
                 c.attr("stroke", "#f00");
             }
-            
+            $('#loading').toggle();
         });
     });
 
-    $('#getImage').click(function(){
-        $('#loading').show();
+    $('#skipImage').click(function(){
+        $('#loading').toggle();
         $.ajax({
           url: "/getimage",
           dataType: "json"
@@ -64,8 +63,61 @@ $(function(){
                     c.attr("fill-opacity", 0.2);
                     c.attr("stroke", "#f00");
                 }
+                $('#loading').toggle();
             });
-            $('#loading').hide();
+        });
+    });
+
+    $('#saveImage').click(function(){
+        $('#loading').toggle();
+        var result = {};
+        var imgName = $('#testImage').attr('src');
+        imgName = imgName.split('/')[1] + '/' + imgName.split('/')[3];
+        result.name = imgName;
+        var boxes = [];
+        for(var i = 0 ; i<rects.length; i++){
+            var box = {};
+            box.x = rects[i].attr("x");
+            box.y = rects[i].attr("y");
+            box.width = rects[i].attr("width");
+            box.height = rects[i].attr("height");
+            boxes.push(box);
+        }
+        result.boxes = boxes;
+        $.ajax({
+            url: "/postresult",
+            method: "POST",
+            data: result
+        }).done(function(data){
+            console.log("Sent");
+        });
+        $.ajax({
+          url: "/getimage",
+          dataType: "json"
+        }).done(function( data ) {
+            removeRectangles();
+            var imgName = data.name;
+            var boxes = data.boxes;
+            $('#testImage').remove();
+            $('#wrapper').prepend('<img id="testImage" src="'+imgName+'">');
+            var img = $('#testImage');
+            img.load(function(){
+                img.attr('height', img.height() * 4);
+                paper.setSize(img.width(), img.height());
+                // regular rectangle
+                for(var i = 0; i <boxes.length; i++){
+                    var box = boxes[i];
+                    var c = paper.rect(box.x*4, box.y*4, box.width*4, box.height*4);
+                    c.attr("fill", "#f00");
+                    c.mousemove(changeCursor);
+                    c.mouseout(removeBut);
+                    c.drag(dragMove, dragStart, dragEnd);
+                    rects.push(c);
+                    c.attr("fill-opacity", 0.2);
+                    c.attr("stroke", "#f00");
+                }
+                $('#loading').toggle();
+            });
         });
     });
 
