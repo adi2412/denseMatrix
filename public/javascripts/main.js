@@ -37,6 +37,7 @@ $(function(){
     });
 
     $('#skipImage').click(function(){
+        mixpanel.track("Skip Image clicked");
         $('#loading').toggle();
         $.ajax({
           url: "/getimage",
@@ -69,6 +70,7 @@ $(function(){
     });
 
     $('#saveImage').click(function(){
+        mixpanel.track("Save Image clicked");
         $('#loading').toggle();
         var result = {};
         var imgName = $('#testImage').attr('src');
@@ -130,6 +132,7 @@ $(function(){
     }
 
     function removeBox(){
+        mixpanel.track("Box removed");
         this.remove();
         removeBut();
     }
@@ -161,6 +164,7 @@ $(function(){
        var width = upX - mouseDownX;
        var height = upY - mouseDownY;
        if(!resizing){
+            mixpanel.track("New box drawn");
             drawrec.remove();
             drawrec = undefined;
             DrawRectangle(mouseDownX, mouseDownY, width, height);
@@ -306,5 +310,6 @@ $(function(){
     var dragEnd = function() {
         this.dragging = false;
         resizing = false;
+        mixpanel.track("Box edited");
     };
 });

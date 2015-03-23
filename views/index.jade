@@ -13,6 +13,8 @@ block content
       | X
   div#info
     | Resize from any of the corners. Move the box by clicking in the middle. Drag anywhere on the image to create a new box. Go to the top right of a box to delete it.
+  script
+    | mixpanel.track("Landing page loaded");
   script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js')
   script
     | window.jQuery || document.write('<script src="javascripts/vendor/jquery-1.11.2.min.js"><\/script>')

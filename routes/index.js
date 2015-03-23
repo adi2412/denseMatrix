@@ -23,13 +23,15 @@ exports.getimage = function(req, res){
 
 exports.postresult = function(req, res){
   var boxes = req.body.boxes;
-  for(var i = 0; i<boxes.length; i++){
-    var box = boxes[i];
-    var text = req.body.name + ' ' + parseInt(box.x)/4 + ' ' + parseInt(box.y)/4 + ' ' + parseInt(box.width)/4 + ' ' + parseInt(box.height)/4 + '\n'; 
+  if(boxes){
+    for(var i = 0; i<boxes.length; i++){
+      var box = boxes[i];
+      var text = req.body.name + ' ' + parseInt(box.x)/4 + ' ' + parseInt(box.y)/4 + ' ' + parseInt(box.width)/4 + ' ' + parseInt(box.height)/4 + '\n'; 
+    }
+    fs.appendFile('output.txt', text, function (err) {
+      if (err) throw err;
+    });
   }
-  fs.appendFile('output.txt', text, function (err) {
-    if (err) throw err;
-  });
   res.send("done");
 };
 
