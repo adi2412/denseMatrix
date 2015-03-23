@@ -38,12 +38,12 @@ $(function(){
     });
 
     $('#getImage').click(function(){
-        removeRectangles();
+        $('#loading').show();
         $.ajax({
           url: "/getimage",
           dataType: "json"
         }).done(function( data ) {
-            console.log(data);
+            removeRectangles();
             var imgName = data.name;
             var boxes = data.boxes;
             $('#testImage').remove();
@@ -65,6 +65,7 @@ $(function(){
                     c.attr("stroke", "#f00");
                 }
             });
+            $('#loading').hide();
         });
     });
 
