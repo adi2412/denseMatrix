@@ -158,6 +158,8 @@ $(function(){
         if (this.dragging === true) {
             return;
         }
+        this.unclick(removeBox);
+        $('#removeButton').hide();
         // X,Y Coordinates relative to shape's orgin
         var relativeX = mouseX - $('#canvas').offset().left - this.attr('x');
         var relativeY = mouseY - $('#canvas').offset().top - this.attr('y');

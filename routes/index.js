@@ -6,7 +6,7 @@ var boxes = [];
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'DenseMatrix' });
 };
 
 exports.getimage = function(req, res){
@@ -26,7 +26,6 @@ var findBoxes = function(name, callback){
   boxes = [];
   var lines = new lazy(fs.createReadStream('./results.txt')).lines;
   lines.forEach(function(line){
-    count++;
     var image = line.toString().split(' ');
     if(image[0] === name){
       var box = {
