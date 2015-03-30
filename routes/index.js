@@ -37,9 +37,12 @@ exports.getnextimage = function(req,res){
 exports.postresult = function(req, res){
   var boxes = req.body.boxes;
   if(boxes){
+    console.log(boxes);
+    console.log(boxes.length);
+    var text = '';
     for(var i = 0; i<boxes.length; i++){
       var box = boxes[i];
-      var text = req.body.name + ' ' + parseInt(box.x)/4 + ' ' + parseInt(box.y)/4 + ' ' + parseInt(box.width)/4 + ' ' + parseInt(box.height)/4 + '\n'; 
+      var text = text + req.body.name + ' ' + parseInt(box.x)/4 + ' ' + parseInt(box.y)/4 + ' ' + parseInt(box.width)/4 + ' ' + parseInt(box.height)/4 + '\n'; 
     }
     fs.appendFile('output.txt', text, function (err) {
       if (err) throw err;
