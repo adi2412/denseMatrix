@@ -10,11 +10,24 @@ exports.index = function(req, res){
 };
 
 exports.getimage = function(req, res){
-  var x = Math.floor((Math.random() * 169) + 1);
+  // var x = Math.floor((Math.random() * 169) + 1);
+  var x = 0;
   var name = 'images/test-'+x+'.png';
   findBoxes(name, function(){
     var result = {
       name: '/images/dataset/test-'+x+'.png',
+      boxes: boxes
+    };
+    res.send(JSON.stringify(result));
+  });
+};
+
+exports.getnextimage = function(req,res){
+  var img = parseInt(req.params.val) + 1;
+  var name = 'images/test-'+img+'.png';
+  findBoxes(name, function(){
+    var result = {
+      name: '/images/dataset/test-'+img+'.png',
       boxes: boxes
     };
     res.send(JSON.stringify(result));
@@ -29,6 +42,10 @@ exports.postresult = function(req, res){
       var text = req.body.name + ' ' + parseInt(box.x)/4 + ' ' + parseInt(box.y)/4 + ' ' + parseInt(box.width)/4 + ' ' + parseInt(box.height)/4 + '\n'; 
     }
     fs.appendFile('output.txt', text, function (err) {
+      if (err) throw err;
+    });
+    var timeText = req.body.name + ' ' + req.body.time/1000 + '\n';
+    fs.appendFile('time.txt', timeText, function (err) {
       if (err) throw err;
     });
   }

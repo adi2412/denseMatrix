@@ -8,6 +8,8 @@ $(function(){
     var held = false;
     var resizing = false;
     var box;
+    var currImage;
+    var startTime;
     $.ajax({
       url: "/getimage",
       dataType: "json"
@@ -15,6 +17,7 @@ $(function(){
         console.log(data);
         var imgName = data.name;
         var boxes = data.boxes;
+        currImage = 0;
         $('#wrapper').prepend('<img id="testImage" src="'+imgName+'">');
         var img = $('#testImage');
         img.load(function(){
@@ -32,6 +35,7 @@ $(function(){
                 c.attr("fill-opacity", 0.2);
                 c.attr("stroke", "#f00");
             }
+            startTime = new Date();
             $('#loading').toggle();
         });
     });
@@ -40,10 +44,11 @@ $(function(){
         mixpanel.track("Skip Image clicked");
         $('#loading').toggle();
         $.ajax({
-          url: "/getimage",
+          url: "/getnextimage/"+currImage,
           dataType: "json"
         }).done(function( data ) {
             removeRectangles();
+            currImage++;
             var imgName = data.name;
             var boxes = data.boxes;
             $('#testImage').remove();
@@ -64,12 +69,14 @@ $(function(){
                     c.attr("fill-opacity", 0.2);
                     c.attr("stroke", "#f00");
                 }
+                startTime = new Date();
                 $('#loading').toggle();
             });
         });
     });
 
     $('#saveImage').click(function(){
+        var elapsed = new Date() - startTime;
         mixpanel.track("Save Image clicked");
         $('#loading').toggle();
         var result = {};
@@ -86,6 +93,7 @@ $(function(){
             boxes.push(box);
         }
         result.boxes = boxes;
+        result.time = elapsed;
         $.ajax({
             url: "/postresult",
             method: "POST",
@@ -94,10 +102,11 @@ $(function(){
             console.log("Sent");
         });
         $.ajax({
-          url: "/getimage",
+          url: "/getnextimage/"+currImage,
           dataType: "json"
         }).done(function( data ) {
             removeRectangles();
+            currImage++;
             var imgName = data.name;
             var boxes = data.boxes;
             $('#testImage').remove();
@@ -118,6 +127,7 @@ $(function(){
                     c.attr("fill-opacity", 0.2);
                     c.attr("stroke", "#f00");
                 }
+                startTime = new Date();
                 $('#loading').toggle();
             });
         });
