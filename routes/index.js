@@ -44,10 +44,10 @@ exports.postresult = function(req, res){
     var resultBoxes = [];
     for(var i = 0; i<boxes.length; i++){
       var box = boxes[i];
-      box.x = parseInt(box.x);
-      box.y = parseInt(box.y);
-      box.width = parseInt(box.width);
-      box.height = parseInt(box.height);
+      box.x = parseInt(box.x/4);
+      box.y = parseInt(box.y/4);
+      box.width = parseInt(box.width/4);
+      box.height = parseInt(box.height/4);
       resultBoxes.push(box);
     }
     object.hpu.boxes = resultBoxes;
