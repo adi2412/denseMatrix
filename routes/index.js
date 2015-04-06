@@ -1,6 +1,7 @@
 var fs = require('fs');
 var lazy = require('lazy');
-var result = require('../results.json');
+var inputFile = require('../public/output.json');
+var outputFile = require('../final.json');
 /*
  * GET home page.
  */
@@ -13,25 +14,35 @@ exports.getimage = function(req, res){
   // var x = Math.floor((Math.random() * 169) + 1);
   var x = 0;
   var name = 'images/test-'+x+'.png';
-  findBoxes(name, function(){
-    var result = {
-      name: '/images/dataset/test-'+x+'.png',
-      boxes: boxes
-    };
-    res.send(JSON.stringify(result));
-  });
+  var result = {
+    name: '/images/dataset/test-'+x+'.png',
+    boxes: inputFile[x].cpu
+  };
+  res.send(JSON.stringify(result));
+  // findBoxes(name, function(){
+  //   var result = {
+  //     name: '/images/dataset/test-'+x+'.png',
+  //     boxes: boxes
+  //   };
+  //   res.send(JSON.stringify(result));
+  // });
 };
 
 exports.getnextimage = function(req,res){
   var img = parseInt(req.params.val) + 1;
   var name = 'images/test-'+img+'.png';
-  findBoxes(name, function(){
-    var result = {
-      name: '/images/dataset/test-'+img+'.png',
-      boxes: boxes
-    };
-    res.send(JSON.stringify(result));
-  });
+  var result = {
+    name: '/images/dataset/test-'+img+'.png',
+    boxes: inputFile[img].cpu
+  };
+  res.send(JSON.stringify(result));
+  // findBoxes(name, function(){
+  //   var result = {
+  //     name: '/images/dataset/test-'+img+'.png',
+  //     boxes: boxes
+  //   };
+  //   res.send(JSON.stringify(result));
+  // });
 };
 
 exports.postresult = function(req, res){
@@ -52,8 +63,8 @@ exports.postresult = function(req, res){
     }
     object.hpu.boxes = resultBoxes;
     object.hpu.time = req.body.time/1000;
-    // console.log(object);
-    result.push(object);
+    console.log(object);
+    outputFile.push(object);
     // console.log(boxes.length);
     // var text = '';
     // for(var i = 0; i<boxes.length; i++){
@@ -67,7 +78,7 @@ exports.postresult = function(req, res){
     // fs.appendFile('time_new.txt', timeText, function (err) {
     //   if (err) throw err;
     // });
-    fs.writeFile('results.json', JSON.stringify(result), function (err) {
+    fs.writeFile('./final.json', JSON.stringify(outputFile), function (err) {
       if (err) throw err;
     });
   }

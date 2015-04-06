@@ -1,9 +1,10 @@
 $(function(){
     var paper = Raphael("canvas", 500, 500);
+    document.oncontextmenu = function() {return false;};
     // $('#canvas').mousedown(OnMouseDown);
     // $('#canvas').mousemove(OnMouseMove);
     // $('#canvas').mouseup(OnMouseUp);
-    $('#canvas').dblclick(DrawRectangle);
+    // $('#canvas').dblclick(DrawRectangle);
     var rects = [];
     var drawrec;
     var held = false;
@@ -30,19 +31,20 @@ $(function(){
             img.attr('height', img.height() * 4);
             paper.setSize(img.width(), img.height());
             // regular rectangle
-            // for(var i = 0; i <boxes.length; i++){
-            //     var box = boxes[i];
-            //     var c = paper.rect(box.x*4, box.y*4, box.width*4, box.height*4);
-            //     rects.push(c);
-            //     c.mousemove(changeCursor);
-            //     c.mouseout(removeBut);
-            //     c.drag(dragMove, dragStart, dragEnd);
-            //     var col = '#' + Math.floor(Math.random()*16777215).toString(16);
-            //     c.attr("fill", col);
-            //     c.attr("fill-opacity", 0.4);
-            //     c.attr("stroke", col);
-            //     c.attr("stroke-width", 4);
-            // }
+            for(var i = 0; i <boxes.length; i++){
+                var box = boxes[i];
+                var c = paper.rect(box.x*4, box.y*4, box.width*4, box.height*4);
+                rects.push(c);
+                // c.mousemove(changeCursor);
+                // c.mouseout(removeBut);
+                c.mousedown(removeBox);
+                // c.drag(dragMove, dragStart, dragEnd);
+                var col = '#' + Math.floor(Math.random()*16777215).toString(16);
+                c.attr("fill", col);
+                c.attr("fill-opacity", 0.4);
+                c.attr("stroke", col);
+                c.attr("stroke-width", 4);
+            }
             startTime = new Date();
             $('#loading').toggle();
         });
@@ -66,19 +68,20 @@ $(function(){
                 img.attr('height', img.height() * 4);
                 paper.setSize(img.width(), img.height());
                 // regular rectangle
-                // for(var i = 0; i <boxes.length; i++){
-                //     var box = boxes[i];
-                //     var c = paper.rect(box.x*4, box.y*4, box.width*4, box.height*4);
-                //     var col = '#' + Math.floor(Math.random()*16777215).toString(16);
-                //     c.attr("fill", col);
-                //     c.mousemove(changeCursor);
-                //     c.mouseout(removeBut);
-                //     c.drag(dragMove, dragStart, dragEnd);
-                //     rects.push(c);
-                //     c.attr("fill-opacity", 0.4);
-                //     c.attr("stroke", col);
-                //     c.attr("stroke-width", 4);
-                // }
+                for(var i = 0; i <boxes.length; i++){
+                    var box = boxes[i];
+                    var c = paper.rect(box.x*4, box.y*4, box.width*4, box.height*4);
+                    var col = '#' + Math.floor(Math.random()*16777215).toString(16);
+                    c.attr("fill", col);
+                    // c.mousemove(changeCursor);
+                    // c.mouseout(removeBut);
+                    c.mousedown(removeBox);
+                    // c.drag(dragMove, dragStart, dragEnd);
+                    rects.push(c);
+                    c.attr("fill-opacity", 0.4);
+                    c.attr("stroke", col);
+                    c.attr("stroke-width", 4);
+                }
                 startTime = new Date();
                 $('#loading').toggle();
             });
@@ -126,19 +129,20 @@ $(function(){
                 img.attr('height', img.height() * 4);
                 paper.setSize(img.width(), img.height());
                 // regular rectangle
-                // for(var i = 0; i <boxes.length; i++){
-                //     var box = boxes[i];
-                //     var c = paper.rect(box.x*4, box.y*4, box.width*4, box.height*4);
-                //     var col = '#' + Math.floor(Math.random()*16777215).toString(16);
-                //     c.attr("fill", col);
-                //     c.mousemove(changeCursor);
-                //     c.mouseout(removeBut);
-                //     c.drag(dragMove, dragStart, dragEnd);
-                //     rects.push(c);
-                //     c.attr("fill-opacity", 0.4);
-                //     c.attr("stroke", col);
-                //     c.attr("stroke-width", 4);
-                // }
+                for(var i = 0; i <boxes.length; i++){
+                    var box = boxes[i];
+                    var c = paper.rect(box.x*4, box.y*4, box.width*4, box.height*4);
+                    var col = '#' + Math.floor(Math.random()*16777215).toString(16);
+                    c.attr("fill", col);
+                    // c.mousemove(changeCursor);
+                    // c.mouseout(removeBut);
+                    c.mousedown(removeBox);
+                    // c.drag(dragMove, dragStart, dragEnd);
+                    rects.push(c);
+                    c.attr("fill-opacity", 0.4);
+                    c.attr("stroke", col);
+                    c.attr("stroke-width", 4);
+                }
                 startTime = new Date();
                 $('#loading').toggle();
             });
@@ -153,10 +157,17 @@ $(function(){
         rects = [];
     }
 
-    function removeBox(){
+    function removeBox(e){
         mixpanel.track("Box removed");
+        console.log("here");
+        if (e.which == 3){
+            console.log("right click");
+        }
+        var index = rects.indexOf(this);
+        rects.splice(index, 1);
         this.remove();
-        removeBut();
+        // this.remove();
+        // removeBut();
     }
 
     // function OnMouseDown(e){
