@@ -162,10 +162,10 @@ $(function(){
         console.log("here");
         if (e.which == 3){
             console.log("right click");
+            var index = rects.indexOf(this);
+            rects.splice(index, 1);
+            this.remove();
         }
-        var index = rects.indexOf(this);
-        rects.splice(index, 1);
-        this.remove();
         // this.remove();
         // removeBut();
     }
@@ -253,7 +253,7 @@ $(function(){
         if (this.dragging === true) {
             return;
         }
-        this.unclick(removeBox);
+        // this.unclick(removeBox);
         $('#removeButton').hide();
         // X,Y Coordinates relative to shape's orgin
         var relativeX = mouseX - $('#canvas').offset().left - this.attr('x');
