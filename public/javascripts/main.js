@@ -153,10 +153,17 @@ $(function(){
         rects = [];
     }
 
-    function removeBox(){
+    function removeBox(e){
         mixpanel.track("Box removed");
+        console.log("here");
+        if (e.which == 3){
+            console.log("right click");
+        }
+        var index = rects.indexOf(this);
+        rects.splice(index, 1);
         this.remove();
-        removeBut();
+        // this.remove();
+        // removeBut();
     }
 
     // function OnMouseDown(e){
@@ -204,7 +211,7 @@ $(function(){
        drawCol = '#' + Math.floor(Math.random()*16777215).toString(16);
        rects.push(element);
        element.mousemove(changeCursor);
-       element.mouseout(removeBut);
+       element.mousedown(removeBut);
        element.drag(dragMove, dragStart, dragEnd);
        element.attr("fill", drawCol);
        element.attr("fill-opacity", 0.5);
