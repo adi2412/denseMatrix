@@ -4,7 +4,7 @@ $(function(){
     // $('#canvas').mousedown(OnMouseDown);
     // $('#canvas').mousemove(OnMouseMove);
     // $('#canvas').mouseup(OnMouseUp);
-    // $('#canvas').dblclick(DrawRectangle);
+    $('#canvas').dblclick(DrawRectangle);
     var rects = [];
     var drawrec;
     var held = false;
@@ -37,7 +37,7 @@ $(function(){
                 rects.push(c);
                 // c.mousemove(changeCursor);
                 // c.mouseout(removeBut);
-                c.mousedown(removeBox);
+                // c.mousedown(removeBox);
                 // c.drag(dragMove, dragStart, dragEnd);
                 var col = '#' + Math.floor(Math.random()*16777215).toString(16);
                 c.attr("fill", col);
@@ -75,7 +75,7 @@ $(function(){
                     c.attr("fill", col);
                     // c.mousemove(changeCursor);
                     // c.mouseout(removeBut);
-                    c.mousedown(removeBox);
+                    // c.mousedown(removeBox);
                     // c.drag(dragMove, dragStart, dragEnd);
                     rects.push(c);
                     c.attr("fill-opacity", 0.4);
@@ -136,7 +136,7 @@ $(function(){
                     c.attr("fill", col);
                     // c.mousemove(changeCursor);
                     // c.mouseout(removeBut);
-                    c.mousedown(removeBox);
+                    // c.mousedown(removeBox);
                     // c.drag(dragMove, dragStart, dragEnd);
                     rects.push(c);
                     c.attr("fill-opacity", 0.4);
@@ -217,6 +217,7 @@ $(function(){
        element.mousemove(changeCursor);
        element.mouseout(removeBut);
        element.drag(dragMove, dragStart, dragEnd);
+       element.mousedown(removeBox);
        element.attr("fill", drawCol);
        element.attr("fill-opacity", 0.5);
        element.attr("stroke", drawCol);
@@ -291,17 +292,17 @@ $(function(){
         //     this.attr('cursor', 'move');
         // }
 
-        if (relativeX > shapeWidth-closeBox && relativeY < closeBox) {
-            this.attr('cursor', 'pointer');
-            $('#removeButton').show();
-            $('#removeButton').css('position', 'absolute');
-            $('#removeButton').css('left', this.attr('x') + this.attr('width') - resizeBorder + 'px');
-            $('#removeButton').css('top', this.attr('y') - resizeBorder +'px');
-            box = this;
-            this.click(removeBox);
-        } else { 
+        // if (relativeX > shapeWidth-closeBox && relativeY < closeBox) {
+        //     this.attr('cursor', 'pointer');
+        //     $('#removeButton').show();
+        //     $('#removeButton').css('position', 'absolute');
+        //     $('#removeButton').css('left', this.attr('x') + this.attr('width') - resizeBorder + 'px');
+        //     $('#removeButton').css('top', this.attr('y') - resizeBorder +'px');
+        //     box = this;
+        //     this.click(removeBox);
+        // } else { 
             this.attr('cursor', 'move');
-        }
+        // }
     };
 
     var dragStart = function() {
