@@ -1,8 +1,9 @@
 $(function(){
     var paper = Raphael("canvas", 500, 500);
-    $('#canvas').mousedown(OnMouseDown);
-    $('#canvas').mousemove(OnMouseMove);
-    $('#canvas').mouseup(OnMouseUp);
+    // $('#canvas').mousedown(OnMouseDown);
+    // $('#canvas').mousemove(OnMouseMove);
+    // $('#canvas').mouseup(OnMouseUp);
+    $('#canvas').dblclick(DrawRectangle);
     var rects = [];
     var drawrec;
     var held = false;
@@ -10,6 +11,11 @@ $(function(){
     var box;
     var currImage;
     var startTime;
+    var drawCol;
+    var boxOffsetX = 50*4;
+    var boxOffsetY = 20*4;
+    var width = 100*4;
+    var height = 40*4;
     $.ajax({
       url: "/getimage",
       dataType: "json"
@@ -24,17 +30,19 @@ $(function(){
             img.attr('height', img.height() * 4);
             paper.setSize(img.width(), img.height());
             // regular rectangle
-            for(var i = 0; i <boxes.length; i++){
-                var box = boxes[i];
-                var c = paper.rect(box.x*4, box.y*4, box.width*4, box.height*4);
-                rects.push(c);
-                c.mousemove(changeCursor);
-                c.mouseout(removeBut);
-                c.drag(dragMove, dragStart, dragEnd);
-                c.attr("fill", "#f00");
-                c.attr("fill-opacity", 0.2);
-                c.attr("stroke", "#f00");
-            }
+            // for(var i = 0; i <boxes.length; i++){
+            //     var box = boxes[i];
+            //     var c = paper.rect(box.x*4, box.y*4, box.width*4, box.height*4);
+            //     rects.push(c);
+            //     c.mousemove(changeCursor);
+            //     c.mouseout(removeBut);
+            //     c.drag(dragMove, dragStart, dragEnd);
+            //     var col = '#' + Math.floor(Math.random()*16777215).toString(16);
+            //     c.attr("fill", col);
+            //     c.attr("fill-opacity", 0.4);
+            //     c.attr("stroke", col);
+            //     c.attr("stroke-width", 4);
+            // }
             startTime = new Date();
             $('#loading').toggle();
         });
@@ -58,17 +66,19 @@ $(function(){
                 img.attr('height', img.height() * 4);
                 paper.setSize(img.width(), img.height());
                 // regular rectangle
-                for(var i = 0; i <boxes.length; i++){
-                    var box = boxes[i];
-                    var c = paper.rect(box.x*4, box.y*4, box.width*4, box.height*4);
-                    c.attr("fill", "#f00");
-                    c.mousemove(changeCursor);
-                    c.mouseout(removeBut);
-                    c.drag(dragMove, dragStart, dragEnd);
-                    rects.push(c);
-                    c.attr("fill-opacity", 0.2);
-                    c.attr("stroke", "#f00");
-                }
+                // for(var i = 0; i <boxes.length; i++){
+                //     var box = boxes[i];
+                //     var c = paper.rect(box.x*4, box.y*4, box.width*4, box.height*4);
+                //     var col = '#' + Math.floor(Math.random()*16777215).toString(16);
+                //     c.attr("fill", col);
+                //     c.mousemove(changeCursor);
+                //     c.mouseout(removeBut);
+                //     c.drag(dragMove, dragStart, dragEnd);
+                //     rects.push(c);
+                //     c.attr("fill-opacity", 0.4);
+                //     c.attr("stroke", col);
+                //     c.attr("stroke-width", 4);
+                // }
                 startTime = new Date();
                 $('#loading').toggle();
             });
@@ -116,17 +126,19 @@ $(function(){
                 img.attr('height', img.height() * 4);
                 paper.setSize(img.width(), img.height());
                 // regular rectangle
-                for(var i = 0; i <boxes.length; i++){
-                    var box = boxes[i];
-                    var c = paper.rect(box.x*4, box.y*4, box.width*4, box.height*4);
-                    c.attr("fill", "#f00");
-                    c.mousemove(changeCursor);
-                    c.mouseout(removeBut);
-                    c.drag(dragMove, dragStart, dragEnd);
-                    rects.push(c);
-                    c.attr("fill-opacity", 0.2);
-                    c.attr("stroke", "#f00");
-                }
+                // for(var i = 0; i <boxes.length; i++){
+                //     var box = boxes[i];
+                //     var c = paper.rect(box.x*4, box.y*4, box.width*4, box.height*4);
+                //     var col = '#' + Math.floor(Math.random()*16777215).toString(16);
+                //     c.attr("fill", col);
+                //     c.mousemove(changeCursor);
+                //     c.mouseout(removeBut);
+                //     c.drag(dragMove, dragStart, dragEnd);
+                //     rects.push(c);
+                //     c.attr("fill-opacity", 0.4);
+                //     c.attr("stroke", col);
+                //     c.attr("stroke-width", 4);
+                // }
                 startTime = new Date();
                 $('#loading').toggle();
             });
@@ -147,64 +159,68 @@ $(function(){
         removeBut();
     }
 
-    function OnMouseDown(e){
-       var offset = $("#canvas").offset();//This is JQuery function
+    // function OnMouseDown(e){
+    //    var offset = $("#canvas").offset();//This is JQuery function
+    //    mouseDownX = e.pageX - offset.left;
+    //    mouseDownY = e.pageY - offset.top;
+    //    held = true;
+    // }
+
+    // function OnMouseMove(e){
+    //     if(held && !resizing){
+    //         var offset = $("#canvas").offset();
+    //         var upX = e.pageX - offset.left;
+    //         var upY = e.pageY - offset.top;
+    //         var width = upX - mouseDownX;
+    //         var height = upY - mouseDownY;
+    //         updateRectangle(mouseDownX, mouseDownY, width, height);
+    //     }
+    // }
+
+    // function OnMouseUp(e){
+    //     held = false;
+    //    var offset = $("#canvas").offset();//This is JQuery function
+    //    var upX = e.pageX - offset.left;
+    //    var upY = e.pageY - offset.top;
+
+    //    var width = upX - mouseDownX;
+    //    var height = upY - mouseDownY;
+    //    if(!resizing){
+    //         mixpanel.track("New box drawn");
+    //         drawrec.remove();
+    //         drawrec = undefined;
+    //         DrawRectangle(mouseDownX, mouseDownY, width, height);
+    //    }
+    // }
+
+    function DrawRectangle(e){
+        var offset = $("#canvas").offset();//This is JQuery function
        mouseDownX = e.pageX - offset.left;
        mouseDownY = e.pageY - offset.top;
-       held = true;
-    }
-
-    function OnMouseMove(e){
-        if(held && !resizing){
-            var offset = $("#canvas").offset();
-            var upX = e.pageX - offset.left;
-            var upY = e.pageY - offset.top;
-            var width = upX - mouseDownX;
-            var height = upY - mouseDownY;
-            updateRectangle(mouseDownX, mouseDownY, width, height);
-        }
-    }
-
-    function OnMouseUp(e){
-        held = false;
-       var offset = $("#canvas").offset();//This is JQuery function
-       var upX = e.pageX - offset.left;
-       var upY = e.pageY - offset.top;
-
-       var width = upX - mouseDownX;
-       var height = upY - mouseDownY;
-       if(!resizing){
-            mixpanel.track("New box drawn");
-            drawrec.remove();
-            drawrec = undefined;
-            DrawRectangle(mouseDownX, mouseDownY, width, height);
-       }
-    }
-
-    function DrawRectangle(x, y, w, h){
-       var element = paper.rect(x, y, w, h);
-       element.attr({
-                fill: "#F00",
-                stroke: "#F00",
-                "fill-opacity": 0.2
-        });
+       console.log(mouseDownX, mouseDownY);
+       var x = mouseDownX - boxOffsetX;
+       var y = mouseDownY - boxOffsetY;
+       var element = paper.rect(x, y, width, height);
+       drawCol = '#' + Math.floor(Math.random()*16777215).toString(16);
        rects.push(element);
        element.mousemove(changeCursor);
        element.mouseout(removeBut);
        element.drag(dragMove, dragStart, dragEnd);
-       element.attr("fill", "#f00");
-       element.attr("fill-opacity", 0.2);
-       element.attr("stroke", "#f00");
+       element.attr("fill", drawCol);
+       element.attr("fill-opacity", 0.5);
+       element.attr("stroke", drawCol);
+       element.attr("stroke-width", 4);
     }
 
     function updateRectangle(x, y, w, h){
         if(drawrec === undefined){
-            console.log(drawrec);
             drawrec = paper.rect(x, y, w, h);
+            drawCol = '#' + Math.floor(Math.random()*16777215).toString(16);
             drawrec.attr({
-                     fill: "#F00",
-                     stroke: "#F00",
-                     "fill-opacity": 0.2
+                     fill: drawCol,
+                     stroke: drawCol,
+                     "fill-opacity": 0.5,
+                     "stroke-width": 4
              });
         }
         else{
@@ -217,7 +233,7 @@ $(function(){
 
     var removeBut = function(){
         $('#removeButton').hide();
-    }
+    };
 
     var changeCursor = function(e, mouseX, mouseY) {
      
@@ -238,9 +254,33 @@ $(function(){
         var closeBox = 20;
 
         // Change cursor
-        if (relativeX < resizeBorder && relativeY < resizeBorder) { 
-            this.attr('cursor', 'nw-resize');
-        } else if (relativeX > shapeWidth-closeBox && relativeY < closeBox) {
+        // if (relativeX < resizeBorder && relativeY < resizeBorder) { 
+        //     this.attr('cursor', 'nw-resize');
+        // } else if (relativeX > shapeWidth-closeBox && relativeY < closeBox) {
+        //     this.attr('cursor', 'pointer');
+        //     $('#removeButton').show();
+        //     $('#removeButton').css('position', 'absolute');
+        //     $('#removeButton').css('left', this.attr('x') + this.attr('width') - resizeBorder + 'px');
+        //     $('#removeButton').css('top', this.attr('y') - resizeBorder +'px');
+        //     box = this;
+        //     this.click(removeBox);
+        // } else if (relativeX > shapeWidth-resizeBorder && relativeY > shapeHeight-resizeBorder) { 
+        //     this.attr('cursor', 'se-resize');
+        // } else if (relativeX < resizeBorder && relativeY > shapeHeight-resizeBorder) { 
+        //     this.attr('cursor', 'sw-resize');
+        // } else if (relativeX > shapeWidth-resizeBorder && relativeY > resizeBorder && relativeY < shapeHeight-resizeBorder) {
+        //     this.attr('cursor', 'e-resize');
+        // } else if(relativeX < resizeBorder && relativeY > resizeBorder && relativeY < shapeHeight-resizeBorder){
+        //     this.attr('cursor', 'w-resize');
+        // } else if(relativeY < resizeBorder && relativeX > resizeBorder && relativeX < shapeWidth-resizeBorder){
+        //     this.attr('cursor', 'n-resize');
+        // } else if(relativeY > shapeHeight-resizeBorder && relativeX > resizeBorder && relativeX < shapeWidth-resizeBorder){
+        //     this.attr('cursor', 's-resize');
+        // } else { 
+        //     this.attr('cursor', 'move');
+        // }
+
+        if (relativeX > shapeWidth-closeBox && relativeY < closeBox) {
             this.attr('cursor', 'pointer');
             $('#removeButton').show();
             $('#removeButton').css('position', 'absolute');
@@ -248,10 +288,6 @@ $(function(){
             $('#removeButton').css('top', this.attr('y') - resizeBorder +'px');
             box = this;
             this.click(removeBox);
-        } else if (relativeX > shapeWidth-resizeBorder && relativeY > shapeHeight-resizeBorder) { 
-            this.attr('cursor', 'se-resize');
-        } else if (relativeX < resizeBorder && relativeY > shapeHeight-resizeBorder) { 
-            this.attr('cursor', 'sw-resize');
         } else { 
             this.attr('cursor', 'move');
         }
@@ -307,9 +343,35 @@ $(function(){
                 });
                 break;
 
+            case 'n-resize' :
+                this.attr({
+                    y: this.oy + dy,
+                    height: this.oh - dy
+                });
+                break;
+
+            case 'e-resize' :
+                this.attr({
+                    width: this.ow + dx,
+                });
+                break;
+
+            case 's-resize':
+                this.attr({
+                    height: this.oh + dy
+                });
+                break;
+
+            case 'w-resize':
+                this.attr({
+                    x: this.ox + dx,
+                    width: this.ow - dx,
+                });
+                break;
+
             default :
                 this.attr({
-                    x: this.ox + dx, 
+                    x: this.ox + dx,
                     y: this.oy + dy
                 });
                 break;

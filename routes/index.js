@@ -1,6 +1,6 @@
 var fs = require('fs');
 var lazy = require('lazy');
-var boxes = [];
+var result = require('../results.json');
 /*
  * GET home page.
  */
@@ -37,18 +37,37 @@ exports.getnextimage = function(req,res){
 exports.postresult = function(req, res){
   var boxes = req.body.boxes;
   if(boxes){
-    console.log(boxes);
-    console.log(boxes.length);
-    var text = '';
+    // console.log(JSON.stringify(boxes));
+    var object = {};
+    object.image = req.body.name;
+    object.hpu = {};
+    var resultBoxes = [];
     for(var i = 0; i<boxes.length; i++){
       var box = boxes[i];
-      var text = text + req.body.name + ' ' + parseInt(box.x)/4 + ' ' + parseInt(box.y)/4 + ' ' + parseInt(box.width)/4 + ' ' + parseInt(box.height)/4 + '\n'; 
+      box.x = parseInt(box.x);
+      box.y = parseInt(box.y);
+      box.width = parseInt(box.width);
+      box.height = parseInt(box.height);
+      resultBoxes.push(box);
     }
-    fs.appendFile('output.txt', text, function (err) {
-      if (err) throw err;
-    });
-    var timeText = req.body.name + ' ' + req.body.time/1000 + '\n';
-    fs.appendFile('time.txt', timeText, function (err) {
+    object.hpu.boxes = resultBoxes;
+    object.hpu.time = req.body.time/1000;
+    // console.log(object);
+    result.push(object);
+    // console.log(boxes.length);
+    // var text = '';
+    // for(var i = 0; i<boxes.length; i++){
+    //   var box = boxes[i];
+    //   var text = text + req.body.name + ' ' + parseInt(box.x)/4 + ' ' + parseInt(box.y)/4 + ' ' + parseInt(box.width)/4 + ' ' + parseInt(box.height)/4 + '\n'; 
+    // }
+    // fs.appendFile('output_new.txt', text, function (err) {
+    //   if (err) throw err;
+    // });
+    // var timeText = req.body.name + ' ' + req.body.time/1000 + '\n';
+    // fs.appendFile('time_new.txt', timeText, function (err) {
+    //   if (err) throw err;
+    // });
+    fs.writeFile('results.json', JSON.stringify(result), function (err) {
       if (err) throw err;
     });
   }
