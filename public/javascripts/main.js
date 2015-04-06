@@ -1,5 +1,6 @@
 $(function(){
     var paper = Raphael("canvas", 500, 500);
+    document.oncontextmenu = function() {return false;};
     // $('#canvas').mousedown(OnMouseDown);
     // $('#canvas').mousemove(OnMouseMove);
     // $('#canvas').mouseup(OnMouseUp);
